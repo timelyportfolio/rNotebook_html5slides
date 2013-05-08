@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var editor = setupAceEditor('notebook', 'nbSrc');
+  var editor = setupAceEditor('editor');
   var h = window.location.search;
   function setSrc(msg) {
     if (msg) {
