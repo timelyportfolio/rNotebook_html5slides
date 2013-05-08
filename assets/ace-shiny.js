@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var editor = setupAceEditor('editor');
+  var editor = setupAceEditor('notebook','editor');
   var h = window.location.search;
   function setSrc(msg) {
     if (msg) {
@@ -10,7 +10,7 @@ $(document).ready(function() {
   }
   var w = Math.max($(window).width()/2, 300);
   $('#notebook').width(w - 10);
-  $('#nbOut').css('left', w + 10 + 'px');
+  $('#outputBlock').css('left', w + 10 + 'px');
   if (h) {
     // pass a url as a query string after ? in the url
     h = h.replace('?', '');
