@@ -57,7 +57,6 @@ div#phantom pre {
 #page:not(.edit) #insert { display: none; }
 #page.edit #insert { display: visible; }
 
-#inputBlock { width: 48%; float: right; }
 #page #outputBlock { overflow: hidden; position: relative; }
 #page.edit #outputBlock { width: 48%; float: left; margin: 0; }
 #page:not(.edit) #outputBlock { width: 100%; }

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  var editor = setupAceEditor('notebook','editor');
+  var editor = setupAceEditor('editor','editor_text');
   var h = window.location.search;
   function setSrc(msg) {
     if (msg) {
@@ -66,9 +66,9 @@ function setSrc(msg) {
 }
 
 function setWidths(){
-  var w = Math.max($(window).width()/2, 300);
-  $('#notebook').width(w - 10);
-  $('#nbOut').css('left', w + 10 + 'px');
+//  var w = Math.max($(window).width()/2, 300);
+//  $('#notebook').width(w - 10);
+//  $('#nbOut').css('left', w + 10 + 'px');
 }
 
 /*

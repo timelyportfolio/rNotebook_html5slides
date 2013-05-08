@@ -18,7 +18,7 @@ window.URL = window.URL || window.webkitURL;
 $(function(){
   
   // initialize ace editor
-  application.editor = setupAceEditor('notebook','editor');
+  application.editor = setupAceEditor('editor','editor_text');
   
   // handle file
   $("#lefile").change(function() {
