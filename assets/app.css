@@ -37,7 +37,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   width: 600px;
   /* width: 400px; */
-  top: 40px; /* changed from 0 */
+  top: 100px; /* changed from 0 */
   left: 0;
   bottom: 100px;
 }
@@ -46,7 +46,7 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   width: 640px;
   /* left: 750px; */
-  top: 40px;  /* changed from 0 */
+  top: 80px;  /* changed from 0 */
   right: 0;
   bottom: 100px;
   padding-right: 30px;
