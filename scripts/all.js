@@ -703,19 +703,24 @@ function modifyFullscreenURL() {
 }
 
 function getSlideBoundries() {
-    slideBoundries = [0];
     s = slideBoundries;
+    s[0] = 0;    
     
     //start editor at position 1 to do the search
-    editor.moveCursorTo(1);
+    editor.moveCursorTo(1,1);
+    editor.clearSelection();
     
     //get total number of slides
     nslides = editor.findAll('</article>');
     
-    //loop through each slide since we now know how there are
-    for(var i = 0; i<nslides; i++) {
+    //start editor at position 1 to do the search
+    editor.moveCursorTo(1,1);
+    editor.clearSelection();
+    
+    //loop through each slide since we now know how many there are from findAll above
+    for(var i = 1; i < nslides; i++) {
         //change boundaries to be rows rather than number of characters
-        s[i + 1] = editor.find('</article>').end.row + 1;
+        s[i] = editor.find('</article>').end.row ;
     }
     curBoundriesText = latestText;
 }
@@ -739,7 +744,7 @@ function setSlidePosFromCursor(event) {
 }
 
 function setCursorPos() {
-    editor.gotoLine(slideBoundries[curSlide]);
+    editor.gotoLine(slideBoundries[curSlide + 1]);
     //disabled selection but should be easy to add using ace selection methods
     //doc.editor.selectionStart = slideBoundries[curSlide];
     //doc.editor.selectionEnd = slideBoundries[curSlide];
