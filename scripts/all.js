@@ -508,8 +508,11 @@ function onEditChange(event) {
     }
     latestText = editor.getValue();
     if (editTimer == undefined) {
+        //preserve current pos so when rendered don't lose spot
+        currentposition = editor.getCursorPosition();
         editTimer = setTimeout(render, EDIT_BUFFER);
     }
+    editor.moveCursorTo(currentposition.row,currentposition.column)
     client.setDirty();
 }
 
@@ -527,7 +530,7 @@ function render() {
     refresh();
     tooFarInFuture();
     onResize();
-    setSlidePosFromCursor();
+    //setSlidePosFromCursor();
 }
 
 // if deleting text makes currentSlide > # slides then,
@@ -700,9 +703,6 @@ function modifyFullscreenURL() {
 }
 
 function getSlideBoundries() {
-    var nextLoc, s;
-    var distFromZero = 0;
-
     slideBoundries = [0];
     s = slideBoundries;
     
@@ -715,9 +715,7 @@ function getSlideBoundries() {
     //loop through each slide since we now know how there are
     for(var i = 0; i<nslides; i++) {
         //change boundaries to be rows rather than number of characters
-        s[i] = editor.find('</article>').end.row;
-        //nextLoc = editor.getCursorPosition();
-        //s[i] = nextLoc;
+        s[i + 1] = editor.find('</article>').end.row + 1;
     }
     curBoundriesText = latestText;
 }
