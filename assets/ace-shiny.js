@@ -1,16 +1,17 @@
 $(document).ready(function() {
-  var editor = setupAceEditor('editor','editor_text');
+  editor = setupAceEditor('editor','editor_text');
   var h = window.location.search;
   function setSrc(msg) {
     if (msg) {
       alert('unable to read URL ' + h + '\n\nusing default R Markdown example');
     }
-    $('#nbSrc').val(editor.getValue());
+    $('#editor_text').val(editor.getValue());
     $('#proxy button').trigger('click');
   }
   var w = Math.max($(window).width()/2, 300);
   $('#notebook').width(w - 10);
   $('#outputBlock').css('left', w + 10 + 'px');
+    
   if (h) {
     // pass a url as a query string after ? in the url
     h = h.replace('?', '');
@@ -65,35 +66,3 @@ function setSrc(msg) {
   $('#proxy button').trigger('click');
 }
 
-function setWidths(){
-//  var w = Math.max($(window).width()/2, 300);
-//  $('#notebook').width(w - 10);
-//  $('#nbOut').css('left', w + 10 + 'px');
-}
-
-/*
-function loadGist(id) {
-  var gistUrl = 'https://api.github.com/gists/' + id;
-  xhr(gistUrl, function(err, x) {
-    if (err) {
-      return 'Error loading Gist';
-    } else {
-      var d = JSON.parse(x.responseText);
-      var c = (values(d.files || {}).filter(function(file) {
-        return (file.filename.indexOf('.md') !== -1 || file.filename.indexOf('.txt') !== -1);
-      })[0] || {}).content;
-    });
-}
-*/
-
-function gitAjax(){
-  $.ajax({
-      type: "GET",
-      url : "http://api.github.com/gists/329519485740729e38af",
-      data: {},
-      dataType : "jsonp",
-      success : function ( returndata ){
-        console.log(returndata)
-      }
-  });
-}

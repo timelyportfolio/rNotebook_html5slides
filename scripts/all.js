@@ -8,7 +8,18 @@
 (function(global) {
     var globalNamespace = global['namespace'];
     var VERSION = '3.0.1';
-
+    
+    
+    
+    
+    
+    var editor;
+    
+    
+    
+    
+    
+    
     function Module() {}
 
     function numeric(s) {
@@ -586,6 +597,7 @@ function insertStockCode() {
         str = val.slice(0, loc) + text + '\n' + val.slice(loc);
     }
     $(doc.editor).val(str);
+    editor.setValue(str);
     onEditChange();
 }
 
@@ -637,6 +649,24 @@ function onReady() {
             }
         });
     }
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     // get stock code samples from script tags in editor(.html)
     var scripts = $('script[type=slide-template]');
     var s;
@@ -803,6 +833,7 @@ function setDoc(json) {
         console.log('ERROR: unknown blob version number');
     }
     doc.editor.value = latestText;
+    editor.setValue(latestText);
     renderedText = latestText;
     $(doc.output).css('visibility', 'hidden');
     $(doc.output).html("<section class='slides'>" + latestText + "</section>");
