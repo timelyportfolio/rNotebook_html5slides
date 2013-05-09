@@ -506,7 +506,7 @@ function onEditChange(event) {
             return;
         }
     }
-    latestText = doc.editor.value;
+    latestText = editor.getValue();
     if (editTimer == undefined) {
         editTimer = setTimeout(render, EDIT_BUFFER);
     }
@@ -623,6 +623,7 @@ function onReady() {
 
     client.addAppBar();
 
+    $(doc.slidify).click();
     $(doc.edit).click(toggleEditor);
     $(doc.insert).click(insertStockCode);
     $(doc.editor).keydown(tabToSpace);
@@ -644,7 +645,7 @@ function onReady() {
                 console.log('ajax load error');
             },
             success: function(slides) {
-                var json = {title: 'Editable HTML5 Slides', blob: {version: 1.1, slides: slides}};
+                var json = {title: 'Editable HTML5 Slides with R Slidify', blob: {version: 1.1, slides: slides}};
                 setDoc(json);
             }
         });
@@ -701,28 +702,34 @@ function modifyFullscreenURL() {
 function getSlideBoundries() {
     var nextLoc, s;
     var distFromZero = 0;
-    var val = $(doc.editor).val();
+
     slideBoundries = [0];
     s = slideBoundries;
-    nextLoc = val.indexOf('</article>') + 10;
-    while (nextLoc > 9) {
-        distFromZero += nextLoc;
-        s[s.length] = distFromZero;
-        val = val.slice(nextLoc);
-        nextLoc = val.indexOf('</article>') + 10;
+    
+    //start editor at line 0 to do the search
+    editor.moveCursorTo(0);
+    
+    //get total number of slides
+    nslides = editor.findAll('</article>');
+    
+    //loop through each slide since we now know how there are
+    for(var i = 0; i<nslides; i++) {
+        editor.gotoLine(editor.find('</article>').end.r);
+        nextLoc = editor.getCursorPosition();
+        s[i] = nextLoc;
     }
     curBoundriesText = latestText;
 }
 
 function setSlidePosFromCursor(event) {
     // if cursor is inside slide currently displayed do nothing
-    if (doc.editor.selectionEnd > slideBoundries[curSlide] &&
-        doc.editor.selectionEnd < slideBoundries[curSlide + 1]) {
+    if (editor.getCursorPosition().row > slideBoundries[curSlide] &&
+        editor.getCursorPosition().row < slideBoundries[curSlide + 1]) {
         return;
     }
     // find which slide cursor is in
     for (var i = 1; i < slideBoundries.length; i++) {
-        if (slideBoundries[i] >= doc.editor.selectionEnd) {
+        if (slideBoundries[i] >= editor.getCursorPosition().row) {
             adjustSlidePos(i - 1);
             return;
         }
