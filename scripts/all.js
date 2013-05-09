@@ -705,17 +705,15 @@ function modifyFullscreenURL() {
 function getSlideBoundries() {
     s = slideBoundries;
     s[0] = 0;    
-    
-    //start editor at position 1 to do the search
+
+    var oldposition = editor.getCursorPosition();
     editor.moveCursorTo(1,1);
-    editor.clearSelection();
     
     //get total number of slides
     nslides = editor.findAll('</article>');
     
     //start editor at position 1 to do the search
     editor.moveCursorTo(1,1);
-    editor.clearSelection();
     
     //loop through each slide since we now know how many there are from findAll above
     for(var i = 1; i < nslides; i++) {
@@ -723,6 +721,10 @@ function getSlideBoundries() {
         s[i] = editor.find('</article>').end.row ;
     }
     curBoundriesText = latestText;
+    
+    editor.selection.toSingleRange();
+    editor.clearSelection();
+    editor.moveCursorTo(oldposition.row,oldposition.column+1);
 }
 
 function setSlidePosFromCursor(event) {
