@@ -706,17 +706,18 @@ function getSlideBoundries() {
     slideBoundries = [0];
     s = slideBoundries;
     
-    //start editor at line 0 to do the search
-    editor.moveCursorTo(0);
+    //start editor at position 1 to do the search
+    editor.moveCursorTo(1);
     
     //get total number of slides
     nslides = editor.findAll('</article>');
     
     //loop through each slide since we now know how there are
     for(var i = 0; i<nslides; i++) {
-        editor.gotoLine(editor.find('</article>').end.r);
-        nextLoc = editor.getCursorPosition();
-        s[i] = nextLoc;
+        //change boundaries to be rows rather than number of characters
+        s[i] = editor.find('</article>').end.row;
+        //nextLoc = editor.getCursorPosition();
+        //s[i] = nextLoc;
     }
     curBoundriesText = latestText;
 }
@@ -740,15 +741,12 @@ function setSlidePosFromCursor(event) {
 }
 
 function setCursorPos() {
-    $(doc.phantomPre).text($(doc.editor).val().slice(0, slideBoundries[curSlide]));
-    var height = doc.phantom.offsetHeight;
-    if (height < 100) {
-        height = 0;
-    }
-    doc.editor.selectionStart = slideBoundries[curSlide];
-    doc.editor.selectionEnd = slideBoundries[curSlide];
-    $(doc.editor).scrollTop(height);
-    $(doc.editor).blur();
+    editor.gotoLine(slideBoundries[curSlide]);
+    //disabled selection but should be easy to add using ace selection methods
+    //doc.editor.selectionStart = slideBoundries[curSlide];
+    //doc.editor.selectionEnd = slideBoundries[curSlide];
+    //$(doc.editor).scrollTop(height);
+    //$(doc.editor).blur();
 }
 
 function tabToSpace(event) {
