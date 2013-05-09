@@ -726,8 +726,8 @@ function getSlideBoundries() {
     editor.clearSelection();
     //if first run on load then column or row will be 0;  think should go to first line
     //otherwise go to previous position;  important when refreshing to go back to last cursor position
-    if(oldposition.row === 0 | oldposition.column === 0) {
-        editor.moveCursorTo(oldposition.row,oldposition.column+1);
+    if(oldposition.row == 0 | oldposition.column == 0) {
+        editor.moveCursorTo(1,1);
     } else editor.moveCursorTo(oldposition.row,oldposition.column+1);
 }
 
