@@ -604,6 +604,12 @@ function insertStockCode() {
             render();
             setCursorPos();
             return;
+        } else i == slideBoundaries.length - 1 {
+            editor.moveCursorTo(slideBoundaries[i] + 2, 0);
+            editor.clearSelection();
+            editor.insert(text + "\n");   
+            render();
+            setCursorPos();        
         }
     }
     render();
