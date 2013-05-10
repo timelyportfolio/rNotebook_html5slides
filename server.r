@@ -6,19 +6,19 @@ shinyServer(function(input, output) {
     if(input$slidify == 0) {
       return( 
         paste0(
-          "<section class='slides'><article>",
+          "<section class='slides'>",
           input$editor_text,
-          "</article></section>"
+          "</section>"
         )  
       )
     }
     
-    return(
+    return( 
       isolate({
         paste0(
-          "<section class='slides'><article>",
+          "<section class='slides'>",
           input$editor_text,
-          "</article></section>"
+          "</section>"
         )
       })
     )
