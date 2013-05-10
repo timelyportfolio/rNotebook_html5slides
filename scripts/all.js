@@ -428,8 +428,8 @@ var EDIT_BUFFER = 1000;   // ms
 
 var currentScale;
 var currentShift = 0;
-var slideBoundries = [];
-var curBoundriesText = '';
+var slideBoundaries = [];
+var curBoundariesText = '';
 var onReadyFlag;
 
 
@@ -507,25 +507,27 @@ function onEditChange(event) {
         }
     }
     latestText = editor.getValue();
-    if (editTimer == undefined) {
-        //preserve current pos so when rendered don't lose spot
-        currentposition = editor.getCursorPosition();
-        editTimer = setTimeout(render, EDIT_BUFFER);
-    }
-    editor.moveCursorTo(currentposition.row,currentposition.column)
+    
+/*
+LIVE UPDATE CODE
+*/
+    
+//    if (editTimer == undefined) {
+//        //preserve current pos so when rendered don't lose spot
+//        currentposition = editor.getCursorPosition();
+//        editTimer = setTimeout(render, EDIT_BUFFER);
+//    }
+//    editor.moveCursorTo(currentposition.row,currentposition.column)
     client.setDirty();
 }
 
 function render() {
-    if (latestText != curBoundriesText) {
-        getSlideBoundries();
-    }
-    editTimer = undefined;
-    if (renderedText == latestText) {
-        return;
-    }
-    editTimer = setTimeout(render, EDIT_BUFFER);
-    $(doc.output).html("<section class='slides'>" + latestText + "</section>");
+    getSlideBoundaries();
+    
+    //editTimer = undefined;
+    
+    //editTimer = setTimeout(render, EDIT_BUFFER);
+    $(doc.output).html("<section class='slides'>" + editor.getValue() + "</section>");
     renderedText = latestText;
     refresh();
     tooFarInFuture();
@@ -591,17 +593,20 @@ function insertStockCode() {
     if (!text) {
         return;
     }
-    val = $(doc.editor).val();
-    tail = val.slice(doc.editor.selectionEnd);
-    if (tail.indexOf('<article') == -1) {
-        str = val + '\n' + text;
-    } else {
-        loc = doc.editor.selectionEnd + tail.indexOf('<article');
-        str = val.slice(0, loc) + text + '\n' + val.slice(loc);
+    val = editor.getValue();
+    
+    // find which slide cursor is in
+    for (var i = 1; i < slideBoundaries.length; i++) {
+        if (slideBoundaries[i] >= editor.getCursorPosition().row) {
+            editor.moveCursorTo(slideBoundaries[i] + 2, 0);
+            editor.clearSelection();
+            editor.insert(text + "\n");   
+            render();
+            setCursorPos();
+            return;
+        }
     }
-    $(doc.editor).val(str);
-    editor.setValue(str);
-    onEditChange();
+    render();
 }
 
 function trimCode(s) {
@@ -626,7 +631,6 @@ function onReady() {
 
     client.addAppBar();
 
-    $(doc.slidify).click();
     $(doc.edit).click(toggleEditor);
     $(doc.insert).click(insertStockCode);
     $(doc.editor).keydown(tabToSpace);
@@ -635,8 +639,9 @@ function onReady() {
     $(doc.fullscreen).bind('click', viewSlideshowFullscreen);
     $(doc.next).click(nextSlide);
     $(doc.prev).click(prevSlide);
+    $(doc.output).bind('click', render);
 
-    $(doc.output).html("<section class='slides'><article></article></section>");
+    //$(doc.output).html("<section class='slides'><article></article></section>");
     handleDomLoaded();
     // check the url if there exists a doc to be loaded
     var urlData = handleLocationHash();
@@ -702,8 +707,8 @@ function modifyFullscreenURL() {
     }
 }
 
-function getSlideBoundries() {
-    s = slideBoundries;
+function getSlideBoundaries() {
+    s = slideBoundaries;
     s[0] = 0;    
 
     var oldposition = editor.getCursorPosition();
@@ -720,7 +725,7 @@ function getSlideBoundries() {
         //change boundaries to be rows rather than number of characters
         s[i] = editor.find('</article>').end.row ;
     }
-    curBoundriesText = latestText;
+    curBoundariesText = latestText;
     
     editor.selection.toSingleRange();
     editor.clearSelection();
@@ -733,13 +738,13 @@ function getSlideBoundries() {
 
 function setSlidePosFromCursor(event) {
     // if cursor is inside slide currently displayed do nothing
-    if (editor.getCursorPosition().row > slideBoundries[curSlide] &&
-        editor.getCursorPosition().row < slideBoundries[curSlide + 1]) {
+    if (editor.getCursorPosition().row > slideBoundaries[curSlide] &&
+        editor.getCursorPosition().row < slideBoundaries[curSlide + 1]) {
         return;
     }
     // find which slide cursor is in
-    for (var i = 1; i < slideBoundries.length; i++) {
-        if (slideBoundries[i] >= editor.getCursorPosition().row) {
+    for (var i = 1; i < slideBoundaries.length; i++) {
+        if (slideBoundaries[i] >= editor.getCursorPosition().row) {
             adjustSlidePos(i - 1);
             return;
         }
@@ -750,12 +755,7 @@ function setSlidePosFromCursor(event) {
 }
 
 function setCursorPos() {
-    editor.gotoLine(slideBoundries[curSlide + 1]);
-    //disabled selection but should be easy to add using ace selection methods
-    //doc.editor.selectionStart = slideBoundries[curSlide];
-    //doc.editor.selectionEnd = slideBoundries[curSlide];
-    //$(doc.editor).scrollTop(height);
-    //$(doc.editor).blur();
+    editor.gotoLine(slideBoundaries[curSlide + 1]);
 }
 
 function tabToSpace(event) {
@@ -852,7 +852,7 @@ function setDoc(json) {
     $(doc.output).css('visibility', 'hidden');
     $(doc.output).html("<section class='slides'>" + latestText + "</section>");
     refresh();
-    getSlideBoundries();
+    getSlideBoundaries();
     setCursorPos();
     onResize();
     $(doc.output).css('visibility', 'visible');
