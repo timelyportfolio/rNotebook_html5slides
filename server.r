@@ -3,8 +3,9 @@ library(shiny)
 shinyServer(function(input, output) {
   
   observe({
-    print("hi")
-    print(input$slidify)
+    if(input$slidify > 0) {
+      print(input$editor_text)
+    }
   })
   
 })
