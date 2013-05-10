@@ -527,7 +527,7 @@ function render() {
     //editTimer = undefined;
     
     //editTimer = setTimeout(render, EDIT_BUFFER);
-    $(doc.output).html("<section class='slides'>" + editor.getValue() + "</section>");
+    //$(doc.output).html("<section class='slides'>" + editor.getValue() + "</section>");
     renderedText = latestText;
     refresh();
     tooFarInFuture();
@@ -721,7 +721,7 @@ function getSlideBoundaries() {
     editor.moveCursorTo(1,1);
     
     //get total number of slides
-    nslides = editor.findAll('</article>');
+    nslides = editor.findAll('(---)|(<article)', {regExp:true});
     
     //start editor at position 1 to do the search
     editor.moveCursorTo(1,1);
@@ -729,7 +729,7 @@ function getSlideBoundaries() {
     //loop through each slide since we now know how many there are from findAll above
     for(var i = 1; i < nslides; i++) {
         //change boundaries to be rows rather than number of characters
-        s[i] = editor.find('</article>').end.row ;
+        s[i] = editor.find('(---)|(</article)', {regExp:true}).end.row ;
     }
     curBoundariesText = latestText;
     
@@ -896,3 +896,4 @@ function handleAppCache() {
     applicationCache.addEventListener('updateready', handleAppCache, false);
 }
 });
+
