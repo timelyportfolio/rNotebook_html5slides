@@ -14,7 +14,7 @@ shinyServer(function(input, output) {
     
     #manually parse --- and replace with article
     #temporary until slidify working as needed
-    src.split <- unlist( strsplit(src,"(---)|(<article*>)") )
+    src.split <- unlist( strsplit(src,"(---)|(<article>)") )
     
     src.new <- "<article>"  #start with article 
 
