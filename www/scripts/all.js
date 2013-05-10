@@ -428,8 +428,8 @@ var EDIT_BUFFER = 1000;   // ms
 
 var currentScale;
 var currentShift = 0;
-var slideBoundries = [];
-var curBoundriesText = '';
+var slideBoundaries = [];
+var curBoundariesText = '';
 var onReadyFlag;
 
 
@@ -507,11 +507,23 @@ function onEditChange(event) {
         }
     }
     latestText = editor.getValue();
+    
+/*
+LIVE UPDATE CODE
+*/
+    
+//    if (editTimer == undefined) {
+//        //preserve current pos so when rendered don't lose spot
+//        currentposition = editor.getCursorPosition();
+//        editTimer = setTimeout(render, EDIT_BUFFER);
+//    }
+//    editor.moveCursorTo(currentposition.row,currentposition.column)
+    client.setDirty();
 }
 
 function render() {
-    if (latestText != curBoundriesText) {
-        getSlideBoundries();
+    if (latestText != curBoundariesText) {
+        getSlideBoundaries();
     }
     editTimer = undefined;
     if (renderedText == latestText) {
@@ -695,8 +707,8 @@ function modifyFullscreenURL() {
     }
 }
 
-function getSlideBoundries() {
-    s = slideBoundries;
+function getSlideBoundaries() {
+    s = slideBoundaries;
     s[0] = 0;    
 
     var oldposition = editor.getCursorPosition();
@@ -713,7 +725,7 @@ function getSlideBoundries() {
         //change boundaries to be rows rather than number of characters
         s[i] = editor.find('</article>').end.row ;
     }
-    curBoundriesText = latestText;
+    curBoundariesText = latestText;
     
     editor.selection.toSingleRange();
     editor.clearSelection();
@@ -726,13 +738,13 @@ function getSlideBoundries() {
 
 function setSlidePosFromCursor(event) {
     // if cursor is inside slide currently displayed do nothing
-    if (editor.getCursorPosition().row > slideBoundries[curSlide] &&
-        editor.getCursorPosition().row < slideBoundries[curSlide + 1]) {
+    if (editor.getCursorPosition().row > slideBoundaries[curSlide] &&
+        editor.getCursorPosition().row < slideBoundaries[curSlide + 1]) {
         return;
     }
     // find which slide cursor is in
-    for (var i = 1; i < slideBoundries.length; i++) {
-        if (slideBoundries[i] >= editor.getCursorPosition().row) {
+    for (var i = 1; i < slideBoundaries.length; i++) {
+        if (slideBoundaries[i] >= editor.getCursorPosition().row) {
             adjustSlidePos(i - 1);
             return;
         }
@@ -743,7 +755,7 @@ function setSlidePosFromCursor(event) {
 }
 
 function setCursorPos() {
-    editor.gotoLine(slideBoundries[curSlide + 1]);
+    editor.gotoLine(slideBoundaries[curSlide + 1]);
 }
 
 function tabToSpace(event) {
@@ -840,7 +852,7 @@ function setDoc(json) {
     $(doc.output).css('visibility', 'hidden');
     $(doc.output).html("<section class='slides'>" + latestText + "</section>");
     refresh();
-    getSlideBoundries();
+    getSlideBoundaries();
     setCursorPos();
     onResize();
     $(doc.output).css('visibility', 'visible');
