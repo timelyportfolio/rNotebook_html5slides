@@ -631,7 +631,6 @@ function onReady() {
 
     client.addAppBar();
 
-    $(doc.slidify).click();
     $(doc.edit).click(toggleEditor);
     $(doc.insert).click(insertStockCode);
     $(doc.editor).keydown(tabToSpace);
@@ -641,7 +640,7 @@ function onReady() {
     $(doc.next).click(nextSlide);
     $(doc.prev).click(prevSlide);
 
-    $(doc.output).html("<section class='slides'><article></article></section>");
+    //$(doc.output).html("<section class='slides'><article></article></section>");
     handleDomLoaded();
     // check the url if there exists a doc to be loaded
     var urlData = handleLocationHash();

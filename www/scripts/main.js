@@ -125,7 +125,7 @@ function render() {
         return;
     }
     editTimer = setTimeout(render, EDIT_BUFFER);
-    $(doc.output).html("<section class='slides'>" + latestText + "</section>");
+    $(doc.output).html("<section id='slides' class='slides shiny-html-output'>" + latestText + "</section>");
     renderedText = latestText;
     refresh();
     tooFarInFuture();
@@ -235,7 +235,7 @@ function onReady() {
     $(doc.next).click(nextSlide);
     $(doc.prev).click(prevSlide);
 
-    $(doc.output).html("<section class='slides'><article></article></section>");
+    //$(doc.output).html("<section  class='slides'><article></article></section>");
     handleDomLoaded();
     // check the url if there exists a doc to be loaded
     var urlData = handleLocationHash();
@@ -466,7 +466,7 @@ function setDoc(json) {
     doc.editor.value = latestText;
     renderedText = latestText;
     $(doc.output).css('visibility', 'hidden');
-    $(doc.output).html("<section class='slides'>" + latestText + "</section>");
+    $(doc.output).html("<section id='slides' class='slides shiny-html-output'>" + latestText + "</section>");
     refresh();
     getSlideBoundries();
     setCursorPos();
