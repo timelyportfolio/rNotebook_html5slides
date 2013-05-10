@@ -507,13 +507,6 @@ function onEditChange(event) {
         }
     }
     latestText = editor.getValue();
-    if (editTimer == undefined) {
-        //preserve current pos so when rendered don't lose spot
-        currentposition = editor.getCursorPosition();
-        editTimer = setTimeout(render, EDIT_BUFFER);
-    }
-    editor.moveCursorTo(currentposition.row,currentposition.column)
-    client.setDirty();
 }
 
 function render() {
@@ -751,11 +744,6 @@ function setSlidePosFromCursor(event) {
 
 function setCursorPos() {
     editor.gotoLine(slideBoundries[curSlide + 1]);
-    //disabled selection but should be easy to add using ace selection methods
-    //doc.editor.selectionStart = slideBoundries[curSlide];
-    //doc.editor.selectionEnd = slideBoundries[curSlide];
-    //$(doc.editor).scrollTop(height);
-    //$(doc.editor).blur();
 }
 
 function tabToSpace(event) {
