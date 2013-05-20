@@ -403,6 +403,7 @@ var format = require('org.startpad.format');
 
 exports.extend({
     'onReady': onReady,
+    'render': render,
     'getDoc': getDoc,
     'setDoc': setDoc,
     'onSaveSuccess': onSaveSuccess,
@@ -875,7 +876,7 @@ function getDoc() {
     return {
         blob: {
             version: 1.1,
-            slides: doc.editor.value
+            slides: editor.getValue()
         },
         readers: ['public']
     };

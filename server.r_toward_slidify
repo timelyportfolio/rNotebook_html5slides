@@ -1,0 +1,31 @@
+library(shiny)
+library(knitr)
+library(slidify)
+
+
+temprmd <- "temp.Rmd"
+
+shinyServer(function(input, output) {
+  
+  output$output <- renderText({
+
+    #code mostly from rNotebookwill
+    src = input$editor_text
+
+    writeLines( text = src, temprmd )
+
+print(slidify( temprmd, return_page = TRUE )$slides[[1]]$html)
+
+#thanks Ramnath for the script refresh part
+    return(
+      paste(
+        "<section class='slides'>",
+        slidify( temprmd, return_page = TRUE )$slides[[1]]$html,
+        "</section>",
+        "<script>render()</script>",
+        sep = '\n'
+      )
+    )
+    
+  })
+})

@@ -1,7 +1,7 @@
 /*
   Google HTML5 slides template
 
-  Authors: Luke Mahé (code)
+  Authors: Luke Mahï¿½ (code)
   Marcin Wichary (code and design)
 
   Dominic Mazzoni (browser compatibility)
@@ -19,6 +19,7 @@ var PM_TOUCH_SENSITIVITY = 15;
 var curSlide;
 
 var handleLocationHash = namespace.lookup('com.pageforest.html5slides.handleLocationHash');
+var render = namespace.lookup('com.pageforest.html5slides.render');
 var setCursorPos = namespace.lookup('com.pageforest.html5slides.setCursorPos');
 
 var files = {};
