@@ -1,25 +1,21 @@
 library(shiny)
 library(knitr)
-library(slidify)
 
-
-#temprmd <- "temp.Rmd"
 
 shinyServer(function(input, output) {
   
   output$output <- renderText({
-
     
+    #get dependency as in shiny tutorial
+    input$slidify
+    
+  isolate({
     figdir = tempdir(); on.exit(unlink(figdir))
     opts_knit$set(progress = FALSE, fig.path = figdir)
     on.exit(unlink('figure/', recursive = TRUE)) # do not need the figure dir
-    
-    #code mostly from rNotebookwill
+  
+    #code mostly from rNotebook
     src = input$editor_text
-
-#    writeLines( text = src, temprmd )
-    
-#    slidify( temprmd, return_page = FALSE )$content
     
     #manually parse --- and replace with article
     #temporary until slidify working as needed
@@ -41,7 +37,7 @@ shinyServer(function(input, output) {
         )
       }
     }      
-#thanks Ramnath for the script refresh part
+    #thanks Ramnath for the script refresh part
     return(
       paste(
         "<section class='slides'>",
@@ -51,6 +47,6 @@ shinyServer(function(input, output) {
         sep = '\n'
       )
     )
-    
+    })
   })
 })
