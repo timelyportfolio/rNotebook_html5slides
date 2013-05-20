@@ -6,8 +6,6 @@ See it live at [http://timelyportfolio.github.io/rNotebook_html5slides].  This i
 ===
 
 # Original Readme.md from the [Pageforest repo](https://github.com/Bobby-Seidensticker/html5slides)
-HTML5Slides
-===
 This Pageforest.com application is a port of Google's [HTML5 Slides] project.
 
 
