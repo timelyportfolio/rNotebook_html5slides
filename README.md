@@ -1,7 +1,7 @@
 # Combine the Magic from 2 Great Projects
 ## [rNotebook](http://ramnathv.github.io/rCharts) and [html5slides](html5slides.pageforest.com)
 
-See it live at [http://timelyportfolio.github.io/rNotebook_html5slides].
+See it live at [http://timelyportfolio.github.io/rNotebook_html5slides].  This is simple a proof of concept and will serve as a prototype for a much more robust version using [Slidify](http://slidify.org).
 
 ===
 
