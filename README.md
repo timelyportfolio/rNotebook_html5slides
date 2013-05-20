@@ -6,7 +6,7 @@ See a [demo](http://timelyportfolio.github.io/rNotebook_html5slides).
 Run in R
 ```
 require(shiny)
-runGitHub(username="timelyportfolio",repo="rNotebook_html5slides", ref="gh-pages")
+runGitHub(username="timelyportfolio", repo="rNotebook_html5slides", ref="gh-pages")
 ```
 
 This is simply a proof of concept and will serve as a prototype for a much more robust version using [Slidify](http://slidify.org).
